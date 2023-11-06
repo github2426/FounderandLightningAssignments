@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "f2612390-c1f5-4977-910f-7edd859a8ede",
+		"name": "BreweriesData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5580808",
+		"_collection_link": "https://bill-pay.postman.co/workspace/PostmanAssignment~056947a7-3f89-4cfd-8c9e-a258971f15be/collection/5580808-f2612390-c1f5-4977-910f-7edd859a8ede?action=share&source=collection_link&creator=5580808"
+	},
+	"item": [
+		{
+			"name": "BreweriesL:ist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"console.log(jsonData[8].id);\r",
+							"const by_id = jsonData[8].id;\r",
+							"//console.log(by_id);\r",
+							"\r",
+							"console.log(jsonData[8].brewery_type);\r",
+							"const bre_type = jsonData[8].brewery_type;\r",
+							"//console.log(bre_type);\r",
+							"\r",
+							"pm.environment.set(\"by_ids\",by_id);\r",
+							"pm.environment.set(\"by_type\",bre_type);\r",
+							"\r",
+							"pm.test(\"validate status code is - 200\", function(){\r",
+							"pm.response.to.have.status(200);\r",
+							"//pm.expect(jsonData.id).to.eql(\"5128df48-79fc-4f0f-8b52-d06be54d0cec\");\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate brewery_type = large having a all data elements\", function(){\r",
+							"const CypressObject = jsonData.find(m => m.brewery_type === \"large\");\r",
+							"pm.expect(CypressObject).to.be.an(\"object\",\"large is not found\");\r",
+							"console.log(CypressObject);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate brewery_type = micro having a all data elements\", function(){\r",
+							"const CypressObject = jsonData.find(m => m.brewery_type === \"micro\");\r",
+							"pm.expect(CypressObject).to.be.an(\"object\",\"micro is not found\");\r",
+							"console.log(CypressObject);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate brewery_type = brewpub having a all data elements\", function(){\r",
+							"const CypressObject = jsonData.find(m => m.brewery_type === \"brewpub\");\r",
+							"pm.expect(CypressObject).to.be.an(\"object\",\"brewpub is not found\");\r",
+							"console.log(CypressObject);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"validate brewery_type = contract having a all data elements\", function(){\r",
+							"const CypressObject = jsonData.find(m => m.brewery_type === \"contract\");\r",
+							"pm.expect(CypressObject).to.be.an(\"object\",\"contract is not found\");\r",
+							"console.log(CypressObject);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate brewery_type = closed having a all data elements\", function(){\r",
+							"const CypressObject = jsonData.find(m => m.brewery_type === \"closed\");\r",
+							"pm.expect(CypressObject).to.be.an(\"object\",\"closed is not found\");\r",
+							"console.log(CypressObject);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"pm.test(\"Properties Verification\",function() {\r",
+							"  const CypressObject = jsonData.find(m => m.brewery_type === \"closed\");\r",
+							"  pm.expect(CypressObject).to.have.all.keys('id','name','brewery_type','address_1','address_2','address_3','city','state_province','postal_code','country','longitude','latitude','phone','website_url','state','street')  \r",
+							"})\r",
+							"\r",
+							"pm.test(\"return a data for brewery_type ='micro' on match having ph no '8643491430\", function() {\r",
+							"    for(i=0; i<jsonData.length;i++) {\r",
+							"        jsonData[i].phone = 8643491430;\r",
+							"        break;\r",
+							"    }\r",
+							"    const CypressObject = jsonData[i];\r",
+							"    pm.expect(CypressObject).to.be.an(\"object\",\"closed is not found\");\r",
+							"    console.log(CypressObject); \r",
+							"\r",
+							"} )\r",
+							"\r",
+							"pm.test(\"return brewery_type data elements for which 'Portland' is a city\", function(){\r",
+							"    let storearray;\r",
+							"     \r",
+							"     for(i=0;i<jsonData.length;i++) {\r",
+							"      //   jsonData[i].street = 'Portland';\r",
+							"    storearray = jsonData.filter(m => m.city === \"Portland\");\r",
+							"     }\r",
+							"        console.log(storearray);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"return brewery_type data elements for which phone number is NULL\", function(){\r",
+							"    let storearray;\r",
+							"     \r",
+							"     for(i=0;i<jsonData.length;i++) {\r",
+							"      //   jsonData[i].street = 'Portland';\r",
+							"    storearray = jsonData.filter(m => m.phone === null);\r",
+							"     }\r",
+							"        console.log(storearray);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('by_ids',pm.environment.by_ids)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/breweries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"breweries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetreiveBreweries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const getbreweries = pm.response.json();\r",
+							"const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": [\r",
+							"    {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"brewery_type\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"address_1\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"address_2\": {\r",
+							"          \"type\": \"null\"\r",
+							"        },\r",
+							"        \"address_3\": {\r",
+							"          \"type\": \"null\"\r",
+							"        },\r",
+							"        \"city\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"state_province\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"postal_code\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"country\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"longitude\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"latitude\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"phone\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"website_url\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"state\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"street\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"name\",\r",
+							"        \"brewery_type\",\r",
+							"        \"address_1\",\r",
+							"        \"address_2\",\r",
+							"        \"address_3\",\r",
+							"        \"city\",\r",
+							"        \"state_province\",\r",
+							"        \"postal_code\",\r",
+							"        \"country\",\r",
+							"        \"longitude\",\r",
+							"        \"latitude\",\r",
+							"        \"phone\",\r",
+							"        \"website_url\",\r",
+							"        \"state\",\r",
+							"        \"street\"\r",
+							"      ]\r",
+							"    }\r",
+							"  ]\r",
+							"}\r",
+							"pm.test(\"validate the JSON response logic\", function(){\r",
+							"pm.response.to.have.status(200);\r",
+							"console.log(getbreweries);\r",
+							"pm.expect(getbreweries[0].id).to.eql(pm.environment.get(\"by_ids\"));\r",
+							"pm.expect(getbreweries[0].brewery_type).to.eql(pm.environment.get(\"by_type\"))\r",
+							"//pm.expect(jsonData.id).to.eql(\"5128df48-79fc-4f0f-8b52-d06be54d0cec\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"validate JSON response schema\",function(){\r",
+							"pm.response.to.have.status(200);\r",
+							"pm.response.to.have.jsonSchema(schema);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/breweries?by_type={{by_type}}&by_ids={{by_ids}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"breweries"
+					],
+					"query": [
+						{
+							"key": "by_type",
+							"value": "{{by_type}}"
+						},
+						{
+							"key": "by_ids",
+							"value": "{{by_ids}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SortBreweries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"validate status code is - 200\", function(){\r",
+							"pm.response.to.have.status(200);\r",
+							"//pm.expect(jsonData.id).to.eql(\"5128df48-79fc-4f0f-8b52-d06be54d0cec\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"by_ids\",pm.iterationData.set(\"by_ids\"));\r",
+							"console.log(pm.environment.get(\"by_ids\"));\r",
+							"pm.environment.set(\"by_type\",pm.iterationData.set(\"by_type\"));\r",
+							"console.log(pm.environment.get(\"by_type\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/breweries?sort=city:asc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"breweries"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "city:asc"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "by_ids",
+			"value": ""
+		},
+		{
+			"key": "by_type",
+			"value": ""
+		}
+	]
+}
